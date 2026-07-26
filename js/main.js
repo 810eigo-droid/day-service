@@ -40,6 +40,22 @@ document.querySelectorAll('img[data-ph]').forEach((img) => {
   img.addEventListener('error', swap);
 });
 
+// --- 差し替え画像（成長の輪など） ---
+// data-hides を持つ画像：読み込めたら指定要素（CSS版の図など）を隠し、
+// 読み込めなければ画像側を消してCSS版をそのまま表示する。
+document.querySelectorAll('img[data-hides]').forEach((img) => {
+  const hide = () =>
+    document.querySelectorAll(img.dataset.hides).forEach((el) => (el.style.display = 'none'));
+  const drop = () => (img.closest('picture') || img).remove();
+  if (img.complete) {
+    if (img.naturalWidth > 0) hide();
+    else drop();
+  } else {
+    img.addEventListener('load', hide);
+    img.addEventListener('error', drop);
+  }
+});
+
 // --- モバイルメニュー ---
 const menuBtn = document.getElementById('menuBtn');
 const gnav = document.getElementById('gnav');

@@ -288,7 +288,14 @@ small { font-size: .8em; }
 .step-card p { font-size: 14px; color: var(--brown-soft); margin-bottom: 16px; }
 .step-card img, .step-card .ph-box { border-radius: 14px; aspect-ratio: 3/2; object-fit: cover; width: 100%; }
 
-/* 成長の輪 */
+/* 成長の輪（画像版：アップされるとCSS図から自動で切り替わる） */
+.growth-pic { display: block; max-width: 980px; margin: 0 auto; }
+.growth-pic img {
+  width: 100%; border-radius: var(--radius); box-shadow: var(--shadow);
+  border: 6px solid #fff;
+}
+
+/* 成長の輪（CSS版フォールバック） */
 .circle-wrap {
   position: relative; width: min(560px, 92vw); height: min(560px, 92vw);
   margin: 0 auto;

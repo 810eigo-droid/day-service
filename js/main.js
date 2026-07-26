@@ -9,18 +9,27 @@ if (!location.search.includes('noanim')) document.body.classList.add('js');
 // 同名ファイルの別拡張子（webp/jpg/png）→ data-fallback の順に試し、
 // どれも無ければファイル名入りのプレースホルダーに置き換える。
 // 画像ファイルを images/ に置くだけで自動的に本物の画像が表示される。
+// URLに ?fresh を付けると全画像をキャッシュ無視で再取得（更新確認用）
+const FRESH = location.search.includes('fresh') ? '?t=' + Date.now() : '';
+if (FRESH) {
+  document.querySelectorAll('img[src], source[srcset]').forEach((el) => {
+    const attr = el.tagName === 'SOURCE' ? 'srcset' : 'src';
+    el.setAttribute(attr, el.getAttribute(attr) + FRESH);
+  });
+}
+
 const EXTS = ['webp', 'jpg', 'jpeg', 'png'];
 document.querySelectorAll('img[data-ph]').forEach((img) => {
-  const original = img.getAttribute('src') || '';
+  const original = (img.getAttribute('src') || '').split('?')[0];
   const base = original.replace(/\.[a-z]+$/i, '');
   const origExt = (original.match(/\.([a-z]+)$/i) || [])[1] || '';
-  const candidates = EXTS.filter((e) => e !== origExt.toLowerCase()).map((e) => base + '.' + e);
+  const candidates = EXTS.filter((e) => e !== origExt.toLowerCase()).map((e) => base + '.' + e + FRESH);
   const swap = () => {
     const next = candidates.shift();
     if (next) { img.src = next; return; }
     if (img.dataset.fallback && !img.dataset.triedFallback) {
       img.dataset.triedFallback = '1';
-      img.src = img.dataset.fallback;
+      img.src = img.dataset.fallback + FRESH;
       return;
     }
     if (img.dataset.swapped) return;

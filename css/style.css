@@ -163,8 +163,8 @@ small { font-size: .8em; }
 .section { position: relative; }
 
 .hero-inner {
-  position: relative; max-width: 1080px; margin: 0 auto; padding: 0 24px;
-  display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center;
+  position: relative; max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: grid; grid-template-columns: 1.05fr 1fr; gap: 36px; align-items: center;
 }
 .hero-aloha {
   font-family: var(--font-en); font-size: 38px;
@@ -191,7 +191,7 @@ small { font-size: .8em; }
 /* ロゴを枠なしで背景に浮かせる（透過PNG） */
 .hero-img { text-align: center; }
 .hero-img img {
-  width: min(460px, 88%); margin: 0 auto;
+  width: min(560px, 100%); margin: 0 auto;
   filter: drop-shadow(0 14px 30px rgba(217, 100, 26, .28));
   animation: heroFloat 6s ease-in-out infinite;
 }

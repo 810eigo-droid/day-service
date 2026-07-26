@@ -112,12 +112,12 @@ small { font-size: .8em; }
 /* ---------- ヒーロー ---------- */
 .hero {
   position: relative; padding: 150px 0 120px;
-  background: linear-gradient(165deg, #FFFFFF 0%, #FFFDF0 35%, #FBF3CC 70%, #F5E5A0 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 52%, #FFFDF2 68%, #FCF6D9 86%, #F8EDBE 100%);
   overflow: hidden;
 }
 .hero-deco .sun {
   position: absolute; top: 30px; right: -80px; width: 320px; height: 320px;
-  border-radius: 50%;
+  border-radius: 50%; opacity: .75;
   background: radial-gradient(circle, #F8E27E 0%, #F2D264 50%, rgba(255,201,74,0) 72%);
   animation: sunPulse 5s ease-in-out infinite;
 }
@@ -131,7 +131,7 @@ small { font-size: .8em; }
 @keyframes sunPulse { 0%,100%{ transform: scale(1);} 50%{ transform: scale(1.08);} }
 @keyframes sunSpin { to { transform: rotate(360deg); } }
 .hero-deco .leaf {
-  position: absolute; width: 190px; height: 190px; opacity: .16;
+  position: absolute; width: 190px; height: 190px; opacity: .11;
   background: var(--green);
   -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 5 C20 15 8 45 12 75 C14 88 25 95 38 92 C33 80 34 70 38 60 L30 88 C45 95 68 92 80 75 C95 55 90 20 50 5 Z"/></svg>') center/contain no-repeat;
   mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 5 C20 15 8 45 12 75 C14 88 25 95 38 92 C33 80 34 70 38 60 L30 88 C45 95 68 92 80 75 C95 55 90 20 50 5 Z"/></svg>') center/contain no-repeat;

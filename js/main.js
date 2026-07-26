@@ -6,11 +6,18 @@ if (!location.search.includes('noanim')) document.body.classList.add('js');
 
 // --- 画像プレースホルダー ---
 // data-ph="表示名|推奨サイズ" を持つ <img> が読み込めない場合、
-// 同名ファイルの追加を促すプレースホルダーに置き換える。
-// data-fallback があれば先に代替画像を試す。
+// 同名ファイルの別拡張子（webp/jpg/png）→ data-fallback の順に試し、
+// どれも無ければファイル名入りのプレースホルダーに置き換える。
 // 画像ファイルを images/ に置くだけで自動的に本物の画像が表示される。
+const EXTS = ['webp', 'jpg', 'jpeg', 'png'];
 document.querySelectorAll('img[data-ph]').forEach((img) => {
+  const original = img.getAttribute('src') || '';
+  const base = original.replace(/\.[a-z]+$/i, '');
+  const origExt = (original.match(/\.([a-z]+)$/i) || [])[1] || '';
+  const candidates = EXTS.filter((e) => e !== origExt.toLowerCase()).map((e) => base + '.' + e);
   const swap = () => {
+    const next = candidates.shift();
+    if (next) { img.src = next; return; }
     if (img.dataset.fallback && !img.dataset.triedFallback) {
       img.dataset.triedFallback = '1';
       img.src = img.dataset.fallback;
@@ -19,7 +26,7 @@ document.querySelectorAll('img[data-ph]').forEach((img) => {
     if (img.dataset.swapped) return;
     img.dataset.swapped = '1';
     const [label, size] = (img.dataset.ph || '画像').split('|');
-    const file = (img.getAttribute('src') || '').split('/').pop();
+    const file = base.split('/').pop() + '.webp';
     const box = document.createElement('div');
     box.className = 'ph-box';
     box.innerHTML =

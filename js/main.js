@@ -1,5 +1,23 @@
 // ===== 放課後等デイサービス Lino LP =====
 
+// --- サンプルモード ---
+// <html data-sample> が付いているページだけ「SAMPLE」透かしを全面表示し、
+// 右クリック・文字選択を抑止する。納品時は index.html の data-sample を削除するだけ。
+// （index-2.html は透かしなしのクリーン版）
+const SAMPLE_MODE = document.documentElement.hasAttribute('data-sample');
+if (SAMPLE_MODE) {
+  const wm = document.createElement('div');
+  wm.className = 'sample-watermark';
+  wm.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(wm);
+  const ribbon = document.createElement('div');
+  ribbon.className = 'sample-ribbon';
+  ribbon.textContent = 'サンプル（ご確認用）';
+  document.body.appendChild(ribbon);
+  document.body.classList.add('sample-mode');
+  document.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+
 // スクロールアニメーションはJS有効時のみ（無効時も全文が読める）
 // ?noanim を付けるとアニメーション無しで表示（確認・キャプチャ用）
 if (!location.search.includes('noanim')) document.body.classList.add('js');

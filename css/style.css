@@ -329,6 +329,9 @@ small { font-size: .8em; }
   border: 6px solid #fff;
 }
 .section-pic { margin-bottom: 48px; }
+.section-pic-link { display: block; transition: .25s; }
+.section-pic-link:hover { transform: translateY(-4px); }
+.section-pic-link .section-pic { margin-bottom: 0; }
 @media (max-width: 820px) {
   .growth-pic img, .section-pic img { border-width: 3px; border-radius: 16px; }
 }

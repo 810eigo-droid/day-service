@@ -61,7 +61,8 @@ document.querySelectorAll('img[data-ph]').forEach((img) => {
 document.querySelectorAll('img[data-hides]').forEach((img) => {
   const hide = () =>
     document.querySelectorAll(img.dataset.hides).forEach((el) => (el.style.display = 'none'));
-  const drop = () => (img.closest('picture') || img).remove();
+  const drop = () =>
+    (img.closest('.section-pic-link') || img.closest('picture') || img).remove();
   if (img.complete) {
     if (img.naturalWidth > 0) hide();
     else drop();

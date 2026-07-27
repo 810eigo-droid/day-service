@@ -48,6 +48,7 @@ PC用は横長、SP用は縦長。画面幅820px以下で自動的にSP版が表
 | `growth-circle-pc.webp` / `growth-circle-sp.webp` | 「成長の輪」の図 | PC: 1920×1080 / SP: 800×1200 |
 | `about-lino-pc.webp` / `about-lino-sp.webp` | 「みんなの星から光へ」（HALO→Lino） | PC: 1920×1080 / SP: 800×1300 |
 | `group-list-pc.webp` / `group-list-sp.webp` | 「運営法人・グループ事業所」（4事業所） | PC: 1920×1080 / SP: 800×1200 |
+| `recruit-pc.webp` / `recruit-sp.webp` | 「採用情報」（画像全体がお問い合わせへのリンクになります） | PC: 1920×1080 / SP: 800×1200 |
 
 ## 優先度④：QRコード（SNS）
 

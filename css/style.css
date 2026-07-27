@@ -317,13 +317,21 @@ small { font-size: .8em; }
 .step-card p { font-size: 14px; color: var(--brown-soft); margin-bottom: 16px; }
 .step-card img, .step-card .ph-box { border-radius: 14px; aspect-ratio: 3/2; object-fit: cover; width: 100%; }
 
-/* セクション差し替え画像（アップされるとCSS版から自動で切り替わる） */
-.growth-pic, .section-pic { display: block; max-width: 980px; margin: 0 auto; }
+/* セクション差し替え画像（アップされるとCSS版から自動で切り替わる）
+   コンテンツ幅を飛び出して最大限広く表示し、画像内の文字を読みやすくする */
+.growth-pic, .section-pic {
+  display: block;
+  width: min(1280px, 96vw);
+  margin-left: calc(50% - min(640px, 48vw));
+}
 .growth-pic img, .section-pic img {
   width: 100%; border-radius: var(--radius); box-shadow: var(--shadow);
   border: 6px solid #fff;
 }
 .section-pic { margin-bottom: 48px; }
+@media (max-width: 820px) {
+  .growth-pic img, .section-pic img { border-width: 3px; border-radius: 16px; }
+}
 
 /* 成長の輪（CSS版フォールバック） */
 .circle-wrap {

@@ -12,7 +12,7 @@ if (SAMPLE_MODE) {
   document.body.appendChild(wm);
   const ribbon = document.createElement('div');
   ribbon.className = 'sample-ribbon';
-  ribbon.textContent = 'サンプル（ご確認用）';
+  ribbon.textContent = 'サンプル（ご確認用）© TAF-design';
   document.body.appendChild(ribbon);
   document.body.classList.add('sample-mode');
   document.addEventListener('contextmenu', (e) => e.preventDefault());

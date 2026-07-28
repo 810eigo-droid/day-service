@@ -660,7 +660,7 @@ body.js .reveal.on { opacity: 1; transform: none; }
   .wish-grid { grid-template-columns: 1fr; }
   .step-grid { grid-template-columns: 1fr; }
   .facility-track { gap: 12px; }
-  .facility-slide { min-width: calc((100% - 12px) / 2); }
+  .facility-slide { min-width: 100%; }
   .facility-slide figcaption { font-size: 13px; padding: 10px 12px; }
   .representative-card { grid-template-columns: 150px 1fr; gap: 24px; padding: 24px; }
   .group-duo { grid-template-columns: 1fr; }

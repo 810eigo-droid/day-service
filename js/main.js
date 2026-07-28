@@ -45,7 +45,7 @@ if (facilitySlider) {
   let current = 0;
   let timer;
 
-  const visibleCount = () => (window.innerWidth <= 820 ? 2 : 3);
+  const visibleCount = () => (window.innerWidth <= 820 ? 1 : 3);
   const maxIndex = () => Math.max(0, slides.length - visibleCount());
   const showSlide = (index) => {
     const positions = maxIndex() + 1;

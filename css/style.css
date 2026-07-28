@@ -346,12 +346,38 @@ body.sample-mode { -webkit-user-select: none; user-select: none; }
 .wish-card h4 { font-size: 20px; font-weight: 900; margin-bottom: 10px; }
 
 /* ---------- コンセプト ---------- */
-.concept { background: linear-gradient(180deg, #FCF8E4, #F8EDBE); padding: 130px 0; }
+.concept {
+  background:
+    radial-gradient(circle at 8% 28%, rgba(239,91,132,.13) 0 10px, transparent 11px),
+    radial-gradient(circle at 92% 34%, rgba(47,168,166,.15) 0 13px, transparent 14px),
+    radial-gradient(circle at 12% 76%, rgba(245,199,75,.2) 0 8px, transparent 9px),
+    radial-gradient(circle at 88% 82%, rgba(239,122,46,.12) 0 11px, transparent 12px),
+    linear-gradient(180deg, #FCF8E4, #F8EDBE);
+  padding: 130px 0;
+}
+.concept .sec-en {
+  display: inline-block; padding: 2px 18px 5px; color: #fff;
+  background: var(--orange); border-radius: 999px;
+  box-shadow: 0 5px 0 rgba(217,92,25,.22);
+  transform: rotate(-3deg);
+}
+.concept .sec-title {
+  color: var(--brown);
+  text-shadow: 3px 3px 0 rgba(245,199,75,.42);
+}
+.concept .sec-head.on .sec-title { animation: conceptTitlePop .7s cubic-bezier(.2,1.65,.45,1) backwards; }
+.concept .sec-head.on .sec-title::after { animation: conceptDotsBounce 1s .25s ease backwards; }
 .step-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .step-card {
   background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
   padding: 28px 24px; text-align: center; position: relative;
+  transition: transform .3s ease, box-shadow .3s ease;
 }
+.step-card:hover { transform: translateY(-10px) rotate(-1deg); box-shadow: 0 18px 38px rgba(88,62,37,.18); }
+.step-card:nth-child(2):hover { transform: translateY(-10px) rotate(1deg); }
+.step-card.on { animation: stepCardPop .65s cubic-bezier(.2,1.45,.45,1) backwards; }
+.step-card.on:nth-child(2) { animation-delay: .12s; }
+.step-card.on:nth-child(3) { animation-delay: .24s; }
 .step-num {
   display: inline-block; font-weight: 800; font-size: 12px; letter-spacing: .1em;
   background: var(--teal); color: #fff; border-radius: 999px; padding: 3px 14px; margin-bottom: 10px;
@@ -364,6 +390,26 @@ body.sample-mode { -webkit-user-select: none; user-select: none; }
 .step-card h3 { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
 .step-card p { font-size: 14px; color: var(--brown-soft); margin-bottom: 16px; }
 .step-card img, .step-card .ph-box { border-radius: 14px; aspect-ratio: 3/2; object-fit: cover; width: 100%; }
+@keyframes conceptTitlePop {
+  0% { transform: scale(.72) rotate(-2deg); opacity: 0; }
+  65% { transform: scale(1.06) rotate(1deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes conceptDotsBounce {
+  0% { transform: scaleX(.3) translateY(-8px); opacity: 0; }
+  60% { transform: scaleX(1.12) translateY(3px); opacity: 1; }
+  100% { transform: scaleX(1) translateY(0); opacity: 1; }
+}
+@keyframes stepCardPop {
+  0% { transform: translateY(34px) scale(.88); opacity: 0; }
+  70% { transform: translateY(-6px) scale(1.02); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .concept .sec-head.on .sec-title,
+  .concept .sec-head.on .sec-title::after,
+  .step-card.on { animation: none; }
+}
 
 /* セクション差し替え画像（アップされるとCSS版から自動で切り替わる）
    コンテンツ幅を飛び出して最大限広く表示し、画像内の文字を読みやすくする */

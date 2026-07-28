@@ -379,40 +379,51 @@ body.sample-mode { -webkit-user-select: none; user-select: none; }
 .c3 { bottom: 0; left: 35%; }
 .c4 { top: 35%; right: 0; }
 
-/* ---------- ギャラリー ---------- */
+/* ---------- 施設スライダー ---------- */
 .facility { background: var(--white); }
-.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
-.gallery figure { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-.gallery img, .gallery .ph-box { aspect-ratio: 3/2; object-fit: cover; width: 100%; border-radius: 0; }
-.gallery figcaption { padding: 12px 16px; font-size: 14px; font-weight: 700; text-align: center; background: var(--yellow-soft); }
+.facility-slider { max-width: 1080px; margin: 0 auto; overflow: hidden; }
+.facility-track { display: flex; gap: 18px; transition: transform .4s ease; }
+.facility-slide {
+  min-width: calc((100% - 36px) / 3); background: #fff; border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.facility-slide img, .facility-slide .ph-box { aspect-ratio: 3/2; object-fit: cover; width: 100%; border-radius: 0; }
+.facility-slide figcaption { padding: 14px 18px; font-size: 15px; font-weight: 700; text-align: center; background: var(--yellow-soft); }
+.facility-dots { display: flex; justify-content: center; gap: 10px; padding-top: 20px; }
+.facility-dot {
+  width: 11px; height: 11px; padding: 0; border: 0; border-radius: 50%;
+  background: #d8cfbd; cursor: pointer; transition: transform .2s, background .2s;
+}
+.facility-dot:hover, .facility-dot:focus-visible { transform: scale(1.25); outline: 2px solid var(--orange); outline-offset: 3px; }
+.facility-dot.active { background: var(--orange); transform: scale(1.25); }
 
-/* ---------- スタッフ（ゆっくり流れる横スライダー） ---------- */
+/* ---------- 代表者紹介 ---------- */
 .staff { background: #F1F8EE; }
-.staff-slider {
-  overflow: hidden; padding: 10px 0;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-}
-.staff-track {
-  display: flex; gap: 24px; width: max-content;
-  animation: staffScroll 32s linear infinite;
-}
-.staff-slider:hover .staff-track { animation-play-state: paused; }
-@keyframes staffScroll { to { transform: translateX(calc(-50% - 12px)); } }
-@media (prefers-reduced-motion: reduce) { .staff-track { animation: none; } }
-.slider-hint { text-align: center; font-size: 12px; color: var(--brown-soft); margin-top: 14px; }
-.staff-card {
-  width: 320px; flex-shrink: 0;
+.representative-card {
+  display: grid; grid-template-columns: minmax(180px, 240px) 1fr; gap: clamp(28px, 5vw, 64px);
+  align-items: center; max-width: 900px; margin: 0 auto; padding: clamp(24px, 4vw, 48px);
   background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
-  padding: 24px; text-align: center;
 }
-.staff-card img, .staff-card .ph-box { aspect-ratio: 4/5; object-fit: cover; width: 100%; border-radius: 16px; margin-bottom: 14px; }
+.representative-photo img, .representative-photo .ph-box {
+  width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 16px;
+}
+.representative-body { display: flex; flex-direction: column; gap: 18px; }
 .staff-role { display: inline-block; background: var(--yellow); border-radius: 999px; font-size: 12px; font-weight: 800; padding: 2px 14px; margin-bottom: 6px; }
 .staff-name { font-size: 19px; font-weight: 900; margin-bottom: 8px; }
-.staff-msg { font-size: 14px; color: var(--brown-soft); text-align: left; }
+.representative-message { color: var(--brown-soft); line-height: 2; }
 
 /* ---------- グループ ---------- */
 .group { background: linear-gradient(180deg, #FCF8E4, #F7EAB0); padding: 130px 0; }
+.philosophy-visual {
+  display: block; max-width: 1180px; margin: 0 auto 48px;
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+}
+.philosophy-visual img { display: block; width: 100%; height: auto; }
+.visually-hidden {
+  position: absolute !important; width: 1px !important; height: 1px !important;
+  padding: 0 !important; margin: -1px !important; overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important;
+}
 .group-duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 900px; margin: 0 auto 20px; }
 .duo-card {
   background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
@@ -560,9 +571,10 @@ body.js .reveal.on { opacity: 1; transform: none; }
   .news-card { padding: 28px 22px; }
   .wish-grid { grid-template-columns: 1fr; }
   .step-grid { grid-template-columns: 1fr; }
-  .gallery { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .gallery figcaption { font-size: 12px; padding: 8px 10px; }
-  .staff-card { width: 260px; padding: 18px; }
+  .facility-track { gap: 12px; }
+  .facility-slide { min-width: calc((100% - 12px) / 2); }
+  .facility-slide figcaption { font-size: 13px; padding: 10px 12px; }
+  .representative-card { grid-template-columns: 150px 1fr; gap: 24px; padding: 24px; }
   .group-duo { grid-template-columns: 1fr; }
   .ov-table th { width: auto; display: block; padding: 12px 18px 4px; background: var(--cream-deep); }
   .ov-table td { display: block; padding: 10px 18px 16px; }
@@ -571,6 +583,8 @@ body.js .reveal.on { opacity: 1; transform: none; }
 }
 
 @media (max-width: 480px) {
-  .gallery { grid-template-columns: 1fr; }
+  .representative-card { grid-template-columns: 1fr; text-align: center; }
+  .representative-photo { width: min(170px, 58vw); margin: 0 auto; }
+  .representative-message { text-align: left; }
   .hero-title { font-size: 26px; }
 }

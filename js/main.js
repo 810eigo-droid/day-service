@@ -36,11 +36,64 @@ if (FRESH) {
   });
 }
 
-// --- スタッフスライダー ---
-// カード一式を複製してシームレスな無限ループにする
-// （data-ph処理より先に行い、複製後の画像にもプレースホルダーを効かせる）
-const staffTrack = document.querySelector('.staff-track');
-if (staffTrack) staffTrack.innerHTML += staffTrack.innerHTML;
+// --- 施設スライダー ---
+const facilitySlider = document.querySelector('.facility-slider');
+if (facilitySlider) {
+  const track = facilitySlider.querySelector('.facility-track');
+  const slides = [...facilitySlider.querySelectorAll('.facility-slide')];
+  const dotsWrap = facilitySlider.querySelector('.facility-dots');
+  let current = 0;
+  let timer;
+
+  const visibleCount = () => (window.innerWidth <= 820 ? 2 : 3);
+  const maxIndex = () => Math.max(0, slides.length - visibleCount());
+  const showSlide = (index) => {
+    const positions = maxIndex() + 1;
+    current = (index + positions) % positions;
+    const gap = window.innerWidth <= 820 ? 12 : 18;
+    const slideWidth = (facilitySlider.clientWidth - gap * (visibleCount() - 1)) / visibleCount();
+    track.style.transform = `translateX(-${current * (slideWidth + gap)}px)`;
+    dotsWrap.querySelectorAll('.facility-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === current);
+      dot.setAttribute('aria-current', i === current ? 'true' : 'false');
+    });
+  };
+  const start = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    clearInterval(timer);
+    timer = setInterval(() => showSlide(current + 1), 1500);
+  };
+
+  const buildDots = () => {
+    dotsWrap.innerHTML = '';
+    for (let i = 0; i <= maxIndex(); i += 1) {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'facility-dot';
+      dot.setAttribute('aria-label', `${i + 1}番目の組み合わせを表示`);
+      dot.addEventListener('click', () => {
+        showSlide(i);
+        start();
+      });
+      dotsWrap.appendChild(dot);
+    }
+    showSlide(Math.min(current, maxIndex()));
+  };
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      buildDots();
+      start();
+    }, 150);
+  });
+  facilitySlider.addEventListener('mouseenter', () => clearInterval(timer));
+  facilitySlider.addEventListener('mouseleave', start);
+  facilitySlider.addEventListener('focusin', () => clearInterval(timer));
+  facilitySlider.addEventListener('focusout', start);
+  buildDots();
+  start();
+}
 
 const EXTS = ['webp', 'jpg', 'jpeg', 'png'];
 document.querySelectorAll('img[data-ph]').forEach((img) => {

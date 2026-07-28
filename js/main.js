@@ -36,6 +36,32 @@ if (FRESH) {
   });
 }
 
+// --- ヒーローコピーの波文字 ---
+document.querySelectorAll('[data-wave]').forEach((el) => {
+  const label = el.textContent.replace(/\s+/g, ' ').trim();
+  let index = 0;
+  const splitText = (node) => {
+    [...node.childNodes].forEach((child) => {
+      if (child.nodeType === Node.TEXT_NODE) {
+        const fragment = document.createDocumentFragment();
+        [...child.textContent].forEach((char) => {
+          const span = document.createElement('span');
+          span.className = 'wave-char';
+          span.style.setProperty('--wave-i', index++);
+          span.textContent = char;
+          span.setAttribute('aria-hidden', 'true');
+          fragment.appendChild(span);
+        });
+        child.replaceWith(fragment);
+      } else if (child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'BR') {
+        splitText(child);
+      }
+    });
+  };
+  el.setAttribute('aria-label', label);
+  splitText(el);
+});
+
 // --- 施設スライダー ---
 const facilitySlider = document.querySelector('.facility-slider');
 if (facilitySlider) {

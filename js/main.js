@@ -2,8 +2,9 @@
 
 // --- サンプルモード ---
 // <html data-sample> が付いているページだけ「SAMPLE」透かしを全面表示し、
-// 右クリック・文字選択を抑止する。納品時は index.html の data-sample を削除するだけ。
-// （index-2.html は透かしなしのクリーン版）
+// 右クリック・文字選択を抑止する。
+// Lino案件は注文済みのため index.html（公開用）は透かしなし、
+// index-2.html を透かし版として保管している。
 const SAMPLE_MODE = document.documentElement.hasAttribute('data-sample');
 if (SAMPLE_MODE) {
   const wm = document.createElement('div');

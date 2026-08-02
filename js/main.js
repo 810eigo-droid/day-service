@@ -37,11 +37,57 @@ if (FRESH) {
   });
 }
 
+// --- 連番写真の自動検出 ---
+// images/ 内の base-1.webp, base-2.webp ... を順に探し、見つかった一覧を返す。
+// includeBase=true なら base.webp 単体も先頭候補に含める。
+const probePhotos = (base, includeBase, max = 6) =>
+  new Promise((resolve) => {
+    const names = (includeBase ? [base + '.webp'] : []).concat(
+      Array.from({ length: max }, (_, i) => `${base}-${i + 1}.webp`)
+    );
+    const found = new Set();
+    let pending = names.length;
+    const done = () => resolve(names.filter((n) => found.has(n)));
+    names.forEach((name) => {
+      const probe = new Image();
+      probe.onload = () => { found.add(name); if (--pending === 0) done(); };
+      probe.onerror = () => { if (--pending === 0) done(); };
+      probe.src = 'images/' + name + FRESH;
+    });
+  });
+
+// --- コンセプト3ステップ：写真のクロスフェード ---
+// concept-stepN-1.webp, -2.webp... が置かれると、カードの写真が
+// ゆっくり入れ替わるスライドショーになる（1枚だけなら固定表示）
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('.step-card').forEach((card, i) => {
+  probePhotos('concept-step' + (i + 1), false).then((list) => {
+    if (!list.length) return;
+    const slot = card.querySelector('img, .ph-box');
+    if (!slot) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'photo-fade';
+    wrap.innerHTML = list
+      .map((n, j) => `<img src="images/${n}${FRESH}" alt="" class="${j === 0 ? 'show' : ''}">`)
+      .join('');
+    slot.replaceWith(wrap);
+    if (list.length > 1 && !REDUCED) {
+      let cur = 0;
+      const imgs = wrap.querySelectorAll('img');
+      setInterval(() => {
+        imgs[cur].classList.remove('show');
+        cur = (cur + 1) % imgs.length;
+        imgs[cur].classList.add('show');
+      }, 3800 + i * 500);
+    }
+  });
+});
+
 // --- 施設スライダー ---
 const facilitySlider = document.querySelector('.facility-slider');
 if (facilitySlider) {
   const track = facilitySlider.querySelector('.facility-track');
-  const slides = [...facilitySlider.querySelectorAll('.facility-slide')];
+  let slides = [...facilitySlider.querySelectorAll('.facility-slide')];
   const dotsWrap = facilitySlider.querySelector('.facility-dots');
   let current = 0;
   let timer;
@@ -92,8 +138,35 @@ if (facilitySlider) {
   facilitySlider.addEventListener('mouseleave', start);
   facilitySlider.addEventListener('focusin', () => clearInterval(timer));
   facilitySlider.addEventListener('focusout', start);
-  buildDots();
-  start();
+
+  // 連番写真（facility-01-1.webp 等）が置かれていたら、全枚数をスライドに展開する
+  const FACILITY_GROUPS = [
+    ['facility-01', 'ゆったり過ごせるメインルーム'],
+    ['facility-02', '集中できる学習スペース'],
+    ['facility-03', 'のびのび遊べるスペース'],
+    ['activity-01', '日々の活動の様子'],
+    ['activity-02', '季節のイベントも大切に'],
+    ['activity-03', '外あそび・おでかけ'],
+  ];
+  Promise.all(FACILITY_GROUPS.map(([base]) => probePhotos(base, true))).then((lists) => {
+    if (lists.flat().length > 0) {
+      track.innerHTML = FACILITY_GROUPS.map(([base, cap], gi) => {
+        if (!lists[gi].length) {
+          // 写真がまだ無いカテゴリはプレースホルダーを表示
+          return `<figure class="facility-slide"><div class="ph-box"><span class="ph-emoji">🌺</span>` +
+                 `<b>${cap}</b><code>${base}-1.webp</code></div><figcaption>${cap}</figcaption></figure>`;
+        }
+        return lists[gi].map((n, j) =>
+          `<figure class="facility-slide"><img src="images/${n}${FRESH}" alt="${cap}" loading="lazy">` +
+          `<figcaption>${cap}${lists[gi].length > 1 ? `（${j + 1}）` : ''}</figcaption></figure>`
+        ).join('');
+      }).join('');
+      slides = [...facilitySlider.querySelectorAll('.facility-slide')];
+      current = 0;
+    }
+    buildDots();
+    start();
+  });
 }
 
 const EXTS = ['webp', 'jpg', 'jpeg', 'png'];

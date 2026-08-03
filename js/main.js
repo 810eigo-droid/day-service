@@ -105,11 +105,55 @@ if (facilitySlider) {
       dot.setAttribute('aria-current', i === current ? 'true' : 'false');
     });
   };
+  let locked = false;
   const start = () => {
+    if (locked) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     clearInterval(timer);
     timer = setInterval(() => showSlide(current + 1), 1500);
   };
+
+  // --- タップで次へ／1秒長押しで自動送りを固定・再開 ---
+  const lockHint = document.createElement('div');
+  lockHint.className = 'facility-lock-hint';
+  lockHint.textContent = '⏸ 自動送りを停止中（1秒長押しで再開）';
+  lockHint.hidden = true;
+  facilitySlider.appendChild(lockHint);
+  const setLocked = (v) => {
+    locked = v;
+    lockHint.hidden = !v;
+    if (v) clearInterval(timer);
+    else start();
+  };
+  let pressTimer = null;
+  let pressX = 0;
+  let pressY = 0;
+  let pressMoved = false;
+  let longPressed = false;
+  track.addEventListener('pointerdown', (e) => {
+    pressX = e.clientX; pressY = e.clientY;
+    pressMoved = false; longPressed = false;
+    clearTimeout(pressTimer);
+    pressTimer = setTimeout(() => {
+      if (!pressMoved) { longPressed = true; setLocked(!locked); }
+    }, 1000);
+  });
+  track.addEventListener('pointermove', (e) => {
+    if (Math.abs(e.clientX - pressX) > 12 || Math.abs(e.clientY - pressY) > 12) {
+      pressMoved = true;
+      clearTimeout(pressTimer);
+    }
+  });
+  const endPress = (e) => {
+    clearTimeout(pressTimer);
+    if (e.type === 'pointerup' && !pressMoved && !longPressed) {
+      showSlide(current + 1);
+      start();
+    }
+  };
+  track.addEventListener('pointerup', endPress);
+  track.addEventListener('pointercancel', endPress);
+  track.addEventListener('contextmenu', (e) => e.preventDefault());
 
   const buildDots = () => {
     dotsWrap.innerHTML = '';

@@ -548,7 +548,16 @@ body.sample-mode { -webkit-user-select: none; user-select: none; }
 
 /* ---------- 施設スライダー ---------- */
 .facility { background: var(--white); }
-.facility-slider { max-width: 1080px; margin: 0 auto; overflow: hidden; }
+.facility-slider {
+  max-width: 1080px; margin: 0 auto; overflow: hidden; position: relative;
+  cursor: pointer; touch-action: pan-y;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+}
+.facility-lock-hint {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: 12px; z-index: 5;
+  background: rgba(74, 59, 42, .82); color: #fff; font-size: 12px; font-weight: 700;
+  padding: 6px 16px; border-radius: 999px; pointer-events: none; white-space: nowrap;
+}
 .facility-track { display: flex; gap: 18px; transition: transform .4s ease; }
 .facility-slide {
   min-width: calc((100% - 36px) / 3); background: #fff; border-radius: var(--radius);
